@@ -15,6 +15,7 @@ import tr.com.response.BaseResponse;
 import tr.com.service.ProductService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -44,6 +45,15 @@ public class ProductController {
         List<ProductDto> productDtoList = productService.getAllProducts();
         return new BaseResponse<>(productDtoList);
     }
+
+  /*
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping()
+    public BaseResponse<Map<String, Object>> getAllProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        Map<String, Object> response = productService.getAllProducts(page, size);
+        return new BaseResponse<>(response);
+    }
+   */
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -84,17 +94,38 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @PostMapping("/available-product-filter")
+   /* @PostMapping("/available-product-filter")
     public ResponseEntity<BaseResponse<List<ProductDto>>> filterAvailableProductsForUser(@RequestBody ProductFilterRequest productFilterRequest) {
         List<ProductDto> filteredProducts = productService.filterAvailableProductsForUser(productFilterRequest);
         return ResponseEntity.ok(new BaseResponse<>(filteredProducts));
     }
 
-    @GetMapping("/available-for-user")
+    */
+
+
+    @PostMapping("/available-product-filter")
+    public ResponseEntity<BaseResponse<Map<String, Object>>> filterAvailableProductsForUser(@RequestBody ProductFilterRequest productFilterRequest,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        Map<String, Object> response = productService.filterAvailableProductsForUser(productFilterRequest, page, size);
+        return ResponseEntity.ok(new BaseResponse<>(response));
+    }
+
+
+   /* @GetMapping("/available-for-user")
     public ResponseEntity<BaseResponse<List<ProductDto>>> getAvailableProductsForUser(@RequestParam("userId") String userId) {
         List<ProductDto> availableProducts = productService.getAvailableProductsForUser(userId);
         return ResponseEntity.ok(new BaseResponse<>(availableProducts));
     }
+
+    */
+
+    @GetMapping("/available-for-user")
+    public ResponseEntity<BaseResponse<Map<String, Object>>> getAvailableProductsForUser(@RequestParam("userId") String userId,
+              @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        Map<String, Object> response = productService.getAvailableProductsForUser(userId, page, size);
+        return ResponseEntity.ok(new BaseResponse<>(response));
+    }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/filter")

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tr.com.dto.ProductDto;
 import tr.com.dto.SellerDto;
 import tr.com.exception.*;
-import tr.com.exception.*;
 import tr.com.mapper.ProductMapper;
 import tr.com.mapper.SellerMapper;
 import tr.com.model.Product;
@@ -18,12 +17,15 @@ import tr.com.repository.UserRepository;
 import tr.com.request.ProductFilterRequest;
 import tr.com.service.ProductService;
 import tr.com.utils.StringUtils;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -53,9 +55,46 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Map<String, Object> getAvailableProductsForUser(String userId, int page, int size) {
+        final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
+        List<UUID> blockedSellerIds = user.getBlackListedSellers().stream().map(Seller::getId).collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> newProductsPage = productRepository.findProductsBySellerIdsNotIn(blockedSellerIds, pageable);
+
+        List<ProductDto> productDtos = newProductsPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", productDtos);
+        response.put("totalPages", newProductsPage.getTotalPages());
+
+        return response;
+    }
+
+
+    @Override
     public List<ProductDto> getAllProducts() {
         List<ProductDto> allProduct = productRepository.findAll().stream().map(productMapper::toDto).collect(Collectors.toList());
         return allProduct;
+    }
+
+    @Override
+    public Map<String, Object> getAllProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage = productRepository.findAll(pageable);
+        List<ProductDto> productDtoList = productPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", productDtoList);
+        System.out.println("total elements : " + productPage.getTotalElements());
+        System.out.println("current page : " + productPage.getNumber());
+        System.out.println("total pages : " + productPage.getTotalPages());
+        response.put("currentPage", productPage.getNumber());
+        response.put("totalItems", productPage.getTotalElements());
+        response.put("totalPages", productPage.getTotalPages());
+        return response;
     }
 
 
@@ -145,6 +184,36 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> productDtoBySeller = seller.getProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
         return productDtoBySeller;
     }
+
+    public Map<String, Object> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<ProductDto> availableProductsDto = getAvailableProductsForUser(productFilterRequest.getUserId());
+        List<Product> availableProducts = availableProductsDto.stream().map(productMapper::toModel).collect(Collectors.toList());
+
+        List<Product> filteredProductsForUser = availableProducts.stream()
+                .filter(product ->
+                        ((productFilterRequest.getProductNames().isEmpty() || productFilterRequest.getProductNames().contains(product.getName())) &&
+                                (productFilterRequest.getCategories().isEmpty() || productFilterRequest.getCategories().contains(product.getCategory())) &&
+                                (productFilterRequest.getBrands().isEmpty() || productFilterRequest.getBrands().contains(product.getBrand()))))
+                .collect(Collectors.toList());
+
+        if (filteredProductsForUser.isEmpty()) {
+            throw new ProductNotFoundForFilterException();
+        }
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), filteredProductsForUser.size());
+        Page<Product> paginatedProducts = new PageImpl<>(filteredProductsForUser.subList(start, end), pageable, filteredProductsForUser.size());
+
+        List<ProductDto> filteredProductDto = paginatedProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", filteredProductDto);
+        response.put("totalPages", paginatedProducts.getTotalPages());
+        return response;
+    }
+
 
     @Override
     public List<ProductDto> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest) {
