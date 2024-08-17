@@ -8,11 +8,11 @@
         <version>3.3.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>tr.com.obss.jip</groupId>
-    <artifactId>FinalProject</artifactId>
+    <groupId>tr.com</groupId>
+    <artifactId>OnlineMarketPlace</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>FinalProject</name>
-    <description>FinalProject</description>
+    <name>OnlineMarketPlace</name>
+    <description>OnlineMarketPlace</description>
     <url/>
     <licenses>
         <license/>

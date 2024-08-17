@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.dto;
+package tr.com.dto;
 
 import lombok.*;
 

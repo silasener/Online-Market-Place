@@ -1,11 +1,11 @@
-package tr.com.obss.jip.finalproject.model;
+package tr.com.model;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import tr.com.obss.jip.finalproject.common.Constants;
-import tr.com.obss.jip.finalproject.utils.SecurityUtils;
+import tr.com.common.Constants;
+import tr.com.utils.SecurityUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

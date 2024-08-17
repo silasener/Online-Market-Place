@@ -1,12 +1,12 @@
-package tr.com.obss.jip.finalproject.service.ımpl;
+package tr.com.service.ımpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tr.com.obss.jip.finalproject.exception.RoleNotFoundException;
-import tr.com.obss.jip.finalproject.model.Role;
-import tr.com.obss.jip.finalproject.repository.RoleRepository;
-import tr.com.obss.jip.finalproject.service.RoleService;
-import tr.com.obss.jip.finalproject.utils.CollectionUtils;
+import tr.com.exception.RoleNotFoundException;
+import tr.com.model.Role;
+import tr.com.repository.RoleRepository;
+import tr.com.service.RoleService;
+import tr.com.utils.CollectionUtils;
 
 import java.util.List;
 

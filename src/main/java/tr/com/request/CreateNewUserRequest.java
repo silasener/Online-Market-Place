@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.request;
+package tr.com.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

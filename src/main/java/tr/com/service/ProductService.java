@@ -1,8 +1,8 @@
-package tr.com.obss.jip.finalproject.service;
+package tr.com.service;
 
-import tr.com.obss.jip.finalproject.dto.ProductDto;
-import tr.com.obss.jip.finalproject.dto.SellerDto;
-import tr.com.obss.jip.finalproject.request.ProductFilterRequest;
+import tr.com.dto.ProductDto;
+import tr.com.dto.SellerDto;
+import tr.com.request.ProductFilterRequest;
 
 import java.util.List;
 

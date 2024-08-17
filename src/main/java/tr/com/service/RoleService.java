@@ -1,6 +1,6 @@
-package tr.com.obss.jip.finalproject.service;
+package tr.com.service;
 
-import tr.com.obss.jip.finalproject.model.Role;
+import tr.com.model.Role;
 
 import java.util.List;
 

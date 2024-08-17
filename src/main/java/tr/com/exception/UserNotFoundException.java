@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.exception;
+package tr.com.exception;
 
 public class UserNotFoundException extends BaseException {
     public UserNotFoundException(String userId) {

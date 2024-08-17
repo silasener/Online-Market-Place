@@ -1,12 +1,12 @@
-package tr.com.obss.jip.finalproject.security;
+package tr.com.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import tr.com.obss.jip.finalproject.model.User;
-import tr.com.obss.jip.finalproject.service.UserService;
+import tr.com.model.User;
+import tr.com.service.UserService;
 
 @RequiredArgsConstructor
 @Service

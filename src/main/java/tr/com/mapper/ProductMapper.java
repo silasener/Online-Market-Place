@@ -1,13 +1,10 @@
-package tr.com.obss.jip.finalproject.mapper;
+package tr.com.mapper;
 
 import org.springframework.stereotype.Component;
-import tr.com.obss.jip.finalproject.dto.ProductDto;
-import tr.com.obss.jip.finalproject.dto.UserDto;
-import tr.com.obss.jip.finalproject.model.Product;
-import tr.com.obss.jip.finalproject.model.User;
-import tr.com.obss.jip.finalproject.utils.StringUtils;
+import tr.com.dto.ProductDto;
+import tr.com.model.Product;
+import tr.com.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Component

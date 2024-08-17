@@ -1,8 +1,8 @@
-package tr.com.obss.jip.finalproject.response;
+package tr.com.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import tr.com.obss.jip.finalproject.common.Constants;
+import tr.com.common.Constants;
 
 @Getter
 @Setter

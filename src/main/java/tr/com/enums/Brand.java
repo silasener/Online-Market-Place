@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.enums;
+package tr.com.enums;
 
 public enum Brand {
     APPLE,

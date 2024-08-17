@@ -1,12 +1,12 @@
-package tr.com.obss.jip.finalproject.model;
+package tr.com.model;
 
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import tr.com.obss.jip.finalproject.enums.Brand;
-import tr.com.obss.jip.finalproject.enums.Category;
+import tr.com.enums.Brand;
+import tr.com.enums.Category;
 
 import java.util.ArrayList;
 import java.util.List;

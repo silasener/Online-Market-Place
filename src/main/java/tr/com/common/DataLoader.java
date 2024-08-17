@@ -1,12 +1,12 @@
-package tr.com.obss.jip.finalproject.common;
+package tr.com.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
-import tr.com.obss.jip.finalproject.service.RoleService;
-import tr.com.obss.jip.finalproject.service.UserService;
+import tr.com.service.RoleService;
+import tr.com.service.UserService;
 
 import java.util.List;
 

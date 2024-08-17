@@ -1,9 +1,9 @@
-package tr.com.obss.jip.finalproject.mapper;
+package tr.com.mapper;
 
 import org.springframework.stereotype.Component;
-import tr.com.obss.jip.finalproject.dto.UserDto;
-import tr.com.obss.jip.finalproject.model.User;
-import tr.com.obss.jip.finalproject.utils.StringUtils;
+import tr.com.dto.UserDto;
+import tr.com.model.User;
+import tr.com.utils.StringUtils;
 
 import java.util.UUID;
 

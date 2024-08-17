@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.common;
+package tr.com.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

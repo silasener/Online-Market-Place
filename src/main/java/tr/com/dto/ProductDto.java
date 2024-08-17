@@ -1,8 +1,8 @@
-package tr.com.obss.jip.finalproject.dto;
+package tr.com.dto;
 
 import lombok.*;
-import tr.com.obss.jip.finalproject.enums.Brand;
-import tr.com.obss.jip.finalproject.enums.Category;
+import tr.com.enums.Brand;
+import tr.com.enums.Category;
 
 import java.time.LocalDateTime;
 

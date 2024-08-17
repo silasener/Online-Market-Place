@@ -1,10 +1,10 @@
-package tr.com.obss.jip.finalproject.request;
+package tr.com.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import tr.com.obss.jip.finalproject.enums.Brand;
-import tr.com.obss.jip.finalproject.enums.Category;
+import tr.com.enums.Brand;
+import tr.com.enums.Category;
 
 @Getter
 @Setter

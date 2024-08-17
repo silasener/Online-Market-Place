@@ -1,12 +1,9 @@
-package tr.com.obss.jip.finalproject.dto;
+package tr.com.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import tr.com.obss.jip.finalproject.model.Product;
-import tr.com.obss.jip.finalproject.model.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Getter

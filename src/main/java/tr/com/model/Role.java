@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.model;
+package tr.com.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

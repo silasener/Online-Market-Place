@@ -1,12 +1,12 @@
-package tr.com.obss.jip.finalproject.exception;
+package tr.com.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import tr.com.obss.jip.finalproject.common.Constants;
-import tr.com.obss.jip.finalproject.response.BaseResponse;
+import tr.com.common.Constants;
+import tr.com.response.BaseResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

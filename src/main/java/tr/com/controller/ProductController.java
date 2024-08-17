@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.controller;
+package tr.com.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,13 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import tr.com.obss.jip.finalproject.dto.ProductDto;
-import tr.com.obss.jip.finalproject.dto.SellerDto;
-import tr.com.obss.jip.finalproject.request.CreateNewProductRequest;
-import tr.com.obss.jip.finalproject.request.ProductFilterRequest;
-import tr.com.obss.jip.finalproject.request.UpdateExistingProductRequest;
-import tr.com.obss.jip.finalproject.response.BaseResponse;
-import tr.com.obss.jip.finalproject.service.ProductService;
+import tr.com.dto.ProductDto;
+import tr.com.dto.SellerDto;
+import tr.com.request.CreateNewProductRequest;
+import tr.com.request.ProductFilterRequest;
+import tr.com.request.UpdateExistingProductRequest;
+import tr.com.response.BaseResponse;
+import tr.com.service.ProductService;
 
 import java.util.List;
 import java.util.UUID;

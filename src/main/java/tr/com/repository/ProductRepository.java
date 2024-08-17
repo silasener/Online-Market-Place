@@ -1,13 +1,12 @@
-package tr.com.obss.jip.finalproject.repository;
+package tr.com.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import tr.com.obss.jip.finalproject.enums.Brand;
-import tr.com.obss.jip.finalproject.enums.Category;
-import tr.com.obss.jip.finalproject.model.Product;
+import tr.com.enums.Brand;
+import tr.com.enums.Category;
+import tr.com.model.Product;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

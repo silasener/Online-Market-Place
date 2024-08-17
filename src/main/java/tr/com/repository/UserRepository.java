@@ -1,10 +1,10 @@
-package tr.com.obss.jip.finalproject.repository;
+package tr.com.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import tr.com.obss.jip.finalproject.model.User;
+import tr.com.model.User;
 
 import java.util.Optional;
 import java.util.UUID;

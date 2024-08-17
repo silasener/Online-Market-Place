@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.exception;
+package tr.com.exception;
 
 public class SellerNotFoundException extends BaseException {
     public SellerNotFoundException(String sellerId) {

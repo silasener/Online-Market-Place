@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.security;
+package tr.com.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

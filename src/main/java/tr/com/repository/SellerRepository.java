@@ -1,10 +1,10 @@
-package tr.com.obss.jip.finalproject.repository;
+package tr.com.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
-import tr.com.obss.jip.finalproject.model.Seller;
+import tr.com.model.Seller;
 
 import java.util.Optional;
 import java.util.UUID;

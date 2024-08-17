@@ -1,11 +1,11 @@
-package tr.com.obss.jip.finalproject.security;
+package tr.com.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import tr.com.obss.jip.finalproject.model.User;
-import tr.com.obss.jip.finalproject.utils.CollectionUtils;
+import tr.com.model.User;
+import tr.com.utils.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Collections;

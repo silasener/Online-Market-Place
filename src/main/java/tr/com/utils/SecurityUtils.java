@@ -1,4 +1,4 @@
-package tr.com.obss.jip.finalproject.utils;
+package tr.com.utils;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.context.SecurityContextHolder;
