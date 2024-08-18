@@ -2,6 +2,7 @@ package tr.com.service.ımpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,10 @@ import tr.com.model.User;
 import tr.com.repository.ProductRepository;
 import tr.com.repository.SellerRepository;
 import tr.com.repository.UserRepository;
+import tr.com.request.CreateNewSellerRequest;
+import tr.com.request.CreateNewUserRequest;
 import tr.com.request.ProductFilterRequest;
+import tr.com.request.UpdateExistingUserRequest;
 import tr.com.service.RoleService;
 import tr.com.service.UserService;
 import tr.com.utils.StringUtils;
@@ -96,12 +100,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto createNewUser(UserDto userDto) {
-        Objects.requireNonNull(userDto, "userDto cannot be null");
-        Objects.requireNonNull(userDto.getName(), "userName cannot be null");
-        Objects.requireNonNull(userDto.getSurname(), "surname cannot be null");
-        Objects.requireNonNull(userDto.getEmail(), "email cannot be null");
-        Objects.requireNonNull(userDto.getPassword(), "password cannot be null");
+    public UserDto createNewUser(CreateNewUserRequest createNewUserRequest) {
+        final UserDto userDto = UserDto.builder().id(UUID.randomUUID().toString())
+                .name(createNewUserRequest.getName())
+                .surname(createNewUserRequest.getSurname())
+                .username(createNewUserRequest.getUsername())
+                .email(createNewUserRequest.getEmail())
+                .password(createNewUserRequest.getPassword())
+                .build();
 
         Optional<User> existingUsername=userRepository.findUserByUsername(userDto.getUsername());
 
@@ -120,11 +126,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SellerDto createNewSeller(SellerDto sellerDto) {
-        Objects.requireNonNull(sellerDto, "sellerDto cannot be null");
-        Objects.requireNonNull(sellerDto.getName(), "sellerName cannot be null");
-        Objects.requireNonNull(sellerDto.getSurname(), "surname cannot be null");
-        Objects.requireNonNull(sellerDto.getEmail(), "email cannot be null");
+    public SellerDto createNewSeller(CreateNewSellerRequest createNewSellerRequest) {
+        final SellerDto sellerDto=SellerDto.builder().id(UUID.randomUUID().toString())
+                .name(createNewSellerRequest.getName())
+                .surname(createNewSellerRequest.getSurname())
+                .email(createNewSellerRequest.getEmail())
+                .venderCode(createNewSellerRequest.getVenderCode())
+                .build();
 
         Optional<Seller> existingSeller = sellerRepository.findSellerByVenderCode(sellerDto.getVenderCode());
         if (existingSeller.isPresent()) {
@@ -188,8 +196,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto updateExistingUser(String userId, UserDto updateUserDto) {
-        Objects.requireNonNull(userId, "userId cannot be null");
+    public UserDto updateExistingUser(String userId, UpdateExistingUserRequest updateExistingUserRequest) {
+        UserDto updateUserDto = UserDto.builder().email(updateExistingUserRequest.getEmail())
+                .name(updateExistingUserRequest.getName())
+                .surname(updateExistingUserRequest.getSurname())
+                .username(updateExistingUserRequest.getUsername())
+                .build();
+
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
 
         Optional<User> existingUsername = userRepository.findUserByUsernameAndIdNot(updateUserDto.getUsername(), user.getId());

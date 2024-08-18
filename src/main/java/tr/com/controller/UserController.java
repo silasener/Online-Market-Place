@@ -48,27 +48,14 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public BaseResponse<UserDto> createNewUser(@RequestBody @Valid CreateNewUserRequest createNewUserRequest) {
-        final UserDto userDto = UserDto.builder().id(UUID.randomUUID().toString())
-                .name(createNewUserRequest.getName())
-                .surname(createNewUserRequest.getSurname())
-                .username(createNewUserRequest.getUsername())
-                .email(createNewUserRequest.getEmail())
-                .password(createNewUserRequest.getPassword())
-                .build();
-        UserDto createdUser = userService.createNewUser(userDto);
+        UserDto createdUser = userService.createNewUser(createNewUserRequest);
         return new BaseResponse<>(createdUser);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create-seller")
     public BaseResponse<SellerDto> createNewSeller(@RequestBody @Valid CreateNewSellerRequest createNewSellerRequest) {
-        final SellerDto sellerDto=SellerDto.builder().id(UUID.randomUUID().toString())
-                .name(createNewSellerRequest.getName())
-                .surname(createNewSellerRequest.getSurname())
-                .email(createNewSellerRequest.getEmail())
-                .venderCode(createNewSellerRequest.getVenderCode())
-                .build();
-        SellerDto createdSeller = userService.createNewSeller(sellerDto);
+        SellerDto createdSeller = userService.createNewSeller(createNewSellerRequest);
         return new BaseResponse<>(createdSeller);
     }
 
@@ -104,13 +91,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public BaseResponse<UserDto> updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UpdateExistingUserRequest updateExistingUserRequest) {
-        UserDto userDto = UserDto.builder().email(updateExistingUserRequest.getEmail())
-                .name(updateExistingUserRequest.getName())
-                .surname(updateExistingUserRequest.getSurname())
-                .username(updateExistingUserRequest.getUsername())
-                .build();
-
-        UserDto updatedUser=userService.updateExistingUser(userId,userDto);
+        UserDto updatedUser=userService.updateExistingUser(userId,updateExistingUserRequest);
         return new BaseResponse<>(updatedUser);
     }
 

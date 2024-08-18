@@ -2,26 +2,24 @@ package tr.com.service;
 
 import tr.com.dto.ProductDto;
 import tr.com.dto.SellerDto;
+import tr.com.request.CreateNewProductRequest;
 import tr.com.request.ProductFilterRequest;
+import tr.com.request.UpdateExistingProductRequest;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ProductService {
 
-    List<ProductDto> getAvailableProductsForUser(String userId);//sil
-
     Map<String, Object> getAvailableProductsForUser(String userId, int page, int size);
-
-    List<ProductDto> getAllProducts();
 
     Map<String, Object> getAllProducts(int page, int size);
 
-    ProductDto createNewProduct(ProductDto productDto);
+    ProductDto createNewProduct(CreateNewProductRequest createNewProductRequest);
 
     ProductDto deleteProductById(String productId);
 
-    ProductDto updateExistingProduct(String productId, ProductDto updateProductDto);
+    ProductDto updateExistingProduct(String productId, UpdateExistingProductRequest updateExistingProductRequest);
 
     List<SellerDto> getSellersByProductId(String productId);
 
@@ -29,9 +27,7 @@ public interface ProductService {
 
     List<ProductDto> getProductsBySellerId(String sellerId);
 
-   List<ProductDto> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest);//sil
-
     Map<String, Object> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest, int page, int size);
 
-    List<ProductDto>  filterProducts(ProductFilterRequest productFilterRequest);
+    Map<String, Object> filterProducts(ProductFilterRequest productFilterRequest, int page, int size);
 }

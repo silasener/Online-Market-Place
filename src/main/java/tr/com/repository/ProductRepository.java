@@ -29,5 +29,11 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     Page<Product> findProductsBySellerIdsNotIn(@Param("blockedSellerIds") List<UUID> blockedSellerIds, Pageable pageable);
 
 
+    @Query("SELECT p FROM Product p JOIN p.sellers s WHERE s.id NOT IN (:blockedSellerIds)")
+    List<Product> findProductsBySellerIdsNotIn(@Param("blockedSellerIds") List<UUID> blockedSellerIds);
+
+    Page<Product> findAll(Pageable pageable);
+
+
 
 }

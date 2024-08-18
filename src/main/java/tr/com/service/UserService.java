@@ -4,7 +4,10 @@ import tr.com.dto.ProductDto;
 import tr.com.dto.SellerDto;
 import tr.com.dto.UserDto;
 import tr.com.model.User;
+import tr.com.request.CreateNewSellerRequest;
+import tr.com.request.CreateNewUserRequest;
 import tr.com.request.ProductFilterRequest;
+import tr.com.request.UpdateExistingUserRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +21,9 @@ public interface UserService {
 
     List<UserDto> generateSampleUsers(int userSize);
 
-    UserDto createNewUser(UserDto userDto);
+    UserDto createNewUser(CreateNewUserRequest createNewUserRequest);
 
-    SellerDto createNewSeller(SellerDto sellerDto);
+    SellerDto createNewSeller(CreateNewSellerRequest createNewSellerRequest);
 
     String generateUsername(UserDto userDto);
 
@@ -32,7 +35,7 @@ public interface UserService {
 
     UserDto deleteUserById(String userId);
 
-    UserDto updateExistingUser(String userId, UserDto updateUserDto);
+    UserDto updateExistingUser(String userId, UpdateExistingUserRequest updateExistingUserRequest);
 
     List<SellerDto> findAllSellers();
 
