@@ -36,10 +36,10 @@ public class BaseEntity implements Serializable {
         final String currentUser= SecurityUtils.getCurrentUser();
         setCreatedAt(LocalDateTime.now());
         setUpdatedAt(LocalDateTime.now());
-        if(Objects.equals(currentUser, "")){
+        if (currentUser == null || currentUser.isEmpty()) {
             setCreatedBy(Constants.SYSTEM_USER);
             setUpdatedBy(Constants.SYSTEM_USER);
-        }else{
+        } else {
             setCreatedBy(currentUser);
             setUpdatedBy(currentUser);
         }
@@ -48,12 +48,13 @@ public class BaseEntity implements Serializable {
     @PreUpdate
     public void onPreUpdate() {
         setUpdatedAt(LocalDateTime.now());
-        if(Objects.equals(SecurityUtils.getCurrentUser(), "")){
+        final String currentUser= SecurityUtils.getCurrentUser();
+        if (currentUser == null ||currentUser.isEmpty()) {
             setCreatedBy(Constants.SYSTEM_USER);
             setUpdatedBy(Constants.SYSTEM_USER);
-        }else{
-            setCreatedBy(SecurityUtils.getCurrentUser());
-            setUpdatedBy(SecurityUtils.getCurrentUser());
+        } else {
+            setCreatedBy(currentUser);
+            setUpdatedBy(currentUser);
         }
     }
 }

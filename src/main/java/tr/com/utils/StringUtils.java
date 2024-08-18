@@ -11,7 +11,7 @@ public class StringUtils {
     public static final String EMPTY = "";
 
     public static Boolean isBlank(String str) {
-        return Objects.isNull(str) || str.trim().length() < 1;
+        return Objects.isNull(str) || str.trim().isEmpty();
     }
 
     public static Boolean isNotBlank(String str) {
