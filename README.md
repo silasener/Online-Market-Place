@@ -140,30 +140,32 @@ Open the following URLs in your browser:
 #### Products
 
 - **GET** `/api/v1/products`  
-  Retrieve a list of products.
+ **Description**: Retrieve a list of products.
 - **GET** `/api/v1/products/{id}`  
-  Retrieve a product by its ID.
+ **Description**: Retrieve a product by its ID.
 
 #### Sellers
 
 - **GET** `/api/v1/users/sellers`  
-  Retrieve a list of sellers.
+ **Description**: Retrieve a list of sellers.
 - **GET** `/api/v1/users/sellers/{id}`  
-  Retrieve a seller by their ID.
+ **Description**: Retrieve a seller by their ID.
 
 #### Favorite List
 
 - **GET** `/api/v1/users/{userId}/favorites`  
-  Retrieve the favorite products of a user.
+ **Description**: Retrieve the favorite products of a user.
 - **POST** `/api/v1/users/{userId}/favorites/{productId}`  
-  Add a product to the user's favorite list.
+**Description**: Add a product to the user's favorite list.
 - **DELETE** `/api/v1/users/{userId}/favorites/{productId}`  
-  Remove a product from the user's favorite list.
+ **Description**: Remove a product from the user's favorite list.
 
 #### Black List
 
-- **POST** `/api/v1/users/{userId}/block-seller`  Block a seller for a user.
-- **GET** `/api/v1/users/{userId}/blocked-sellers`   Retrieve the blocked sellers for a user.
+- **POST** `/api/v1/users/{userId}/block-seller`
+  **Description**: Block a seller for a user.
+- **GET** `/api/v1/users/{userId}/blocked-sellers`
+  **Description**: Retrieve the blocked sellers for a user.
 
 
 
