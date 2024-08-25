@@ -162,10 +162,11 @@ Open the following URLs in your browser:
 
 #### Black List
 
-- **POST** `/api/v1/users/{userId}/block-seller`
-  **Description**: Block a seller for a user.
-- **GET** `/api/v1/users/{userId}/blocked-sellers`
-  **Description**: Retrieve the blocked sellers for a user.
+- **POST** `/api/v1/users/{userId}/block-seller`  
+  **Description**: Block a seller for a user.  
+
+- **GET** `/api/v1/users/{userId}/blocked-sellers`  
+  **Description**: Retrieve the blocked sellers for a user.  
 
 
 
