@@ -135,21 +135,16 @@ Open the following URLs in your browser:
 #### Login
 
 - **POST** `/api/v1/login`  
-  Authenticate a user.
+  **Description**: Authenticate a user.
 
-#### Products
+#### Users
 
-- **GET** `/api/v1/products`  
- **Description**: Retrieve a list of products.
-- **GET** `/api/v1/products/{id}`  
- **Description**: Retrieve a product by its ID.
-
-#### Sellers
-
-- **GET** `/api/v1/users/sellers`  
- **Description**: Retrieve a list of sellers.
-- **GET** `/api/v1/users/sellers/{id}`  
- **Description**: Retrieve a seller by their ID.
+- **GET** `/api/v1/users/{userId}`
+  **Description**: Retrieve the details of a specific user by their user ID.
+- **POST** `/api/v1/users`
+ **Description**: Create a new user.
+- **DELETE** `/api/v1/users/{userId}`
+ **Description**: Delete a user by their user ID.
 
 #### Favorite List
 
@@ -168,6 +163,19 @@ Open the following URLs in your browser:
 - **GET** `/api/v1/users/{userId}/blocked-sellers`  
   **Description**: Retrieve the blocked sellers for a user.  
 
+#### Products
+
+- **GET** `/api/v1/products`  
+ **Description**: Retrieve a list of products.
+- **GET** `/api/v1/products/{id}`  
+ **Description**: Retrieve a product by its ID.
+
+#### Sellers
+
+- **GET** `/api/v1/users/sellers`  
+ **Description**: Retrieve a list of sellers.
+- **GET** `/api/v1/users/sellers/{id}`  
+ **Description**: Retrieve a seller by their ID.
 
 
 
