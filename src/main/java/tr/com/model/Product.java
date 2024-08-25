@@ -26,6 +26,8 @@ public class Product extends BaseEntity {
 
     private String name;
 
+    private String imageUrl;
+
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Seller> sellers = new ArrayList<>();
 

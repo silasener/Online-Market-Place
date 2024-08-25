@@ -20,6 +20,8 @@ public class ProductDto {
 
     private Brand brand;
 
+    private String imageUrl;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

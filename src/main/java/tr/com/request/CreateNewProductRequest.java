@@ -18,5 +18,7 @@ public class CreateNewProductRequest {
     @NotNull
     private String name;
 
+    private String imageUrl;
+
     private Boolean available = Boolean.TRUE;
 }

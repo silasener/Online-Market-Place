@@ -14,4 +14,6 @@ public class UpdateExistingProductRequest {
     private Brand brand;
 
     private String name;
+
+    private String imageUrl;
 }

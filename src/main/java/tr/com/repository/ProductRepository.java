@@ -22,14 +22,16 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE p.name = :name AND p.brand = :brand AND p.category = :category AND p.id <> :id")  // another record check
     Optional<Product> findProductByNameAndBrandAndCategoryAndIdNot(@Param("name") String name, @Param("brand") Brand brand, @Param("category") Category category, @Param("id") UUID id);
 
-    @Query("SELECT p FROM Product p JOIN p.sellers s WHERE s.id NOT IN (:blockedSellerIds)")
-    Page<Product> findProductsBySellerIdsNotIn(@Param("blockedSellerIds") List<UUID> blockedSellerIds, Pageable pageable);
 
+    @Query("SELECT p FROM Product p WHERE EXISTS (SELECT 1 FROM p.sellers s WHERE s.id NOT IN :blockedSellerIds)")
+    Page<Product> findProductsBySellerIdsNotIn(@Param("blockedSellerIds") List<UUID> blockedSellerIds, Pageable pageable);
 
     @Query("SELECT p FROM Product p JOIN p.sellers s WHERE s.id NOT IN (:blockedSellerIds)")
     List<Product> findProductsBySellerIdsNotIn(@Param("blockedSellerIds") List<UUID> blockedSellerIds);
 
     Page<Product> findAll(Pageable pageable);
+
+    Page<Product> findBySellersIsNotEmpty(Pageable pageable);
 
 
 

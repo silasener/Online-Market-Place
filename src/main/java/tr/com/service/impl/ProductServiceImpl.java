@@ -1,6 +1,10 @@
 package tr.com.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.dto.ProductDto;
@@ -19,15 +23,9 @@ import tr.com.request.ProductFilterRequest;
 import tr.com.request.UpdateExistingProductRequest;
 import tr.com.service.ProductService;
 import tr.com.utils.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,7 +45,12 @@ public class ProductServiceImpl implements ProductService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Product> newProductsPage = productRepository.findProductsBySellerIdsNotIn(blockedSellerIds, pageable);
+        Page<Product> newProductsPage;
+        if (blockedSellerIds.isEmpty()) {
+            newProductsPage = productRepository.findBySellersIsNotEmpty(pageable);
+        } else {
+            newProductsPage = productRepository.findProductsBySellerIdsNotIn(blockedSellerIds, pageable);
+        }
 
         List<ProductDto> productDtos = newProductsPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
 
@@ -81,6 +84,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(createNewProductRequest.getName())
                 .brand(createNewProductRequest.getBrand())
                 .category(createNewProductRequest.getCategory())
+                .imageUrl(createNewProductRequest.getImageUrl())
                 .build();
 
         Optional<Product> existingProduct = productRepository.findProductByNameAndBrandAndCategory(productDto.getName(), productDto.getBrand(), productDto.getCategory());
@@ -115,6 +119,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDto updateProductDto = ProductDto.builder().name(updateExistingProductRequest.getName())
                 .category(updateExistingProductRequest.getCategory())
                 .brand(updateExistingProductRequest.getBrand())
+                .imageUrl(updateExistingProductRequest.getImageUrl())
                 .build();
 
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
@@ -134,6 +139,9 @@ public class ProductServiceImpl implements ProductService {
         }
         if (StringUtils.isNotBlank(String.valueOf(updateProductDto.getBrand()))) {
             product.setBrand(updateProductDto.getBrand());
+        }
+        if (StringUtils.isNotBlank(String.valueOf(updateProductDto.getImageUrl()))) {
+            product.setImageUrl(updateProductDto.getImageUrl());
         }
 
         return productMapper.toDto(productRepository.save(product));
@@ -198,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<String, Object> filterProducts(ProductFilterRequest productFilterRequest, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<Product> allProducts=productRepository.findAll();
+        List<Product> allProducts = productRepository.findAll();
 
         List<Product> filteredProductsForAdmin = allProducts.stream()
                 .filter(product ->
@@ -223,7 +231,6 @@ public class ProductServiceImpl implements ProductService {
 
         return response;
     }
-
 
 
 }

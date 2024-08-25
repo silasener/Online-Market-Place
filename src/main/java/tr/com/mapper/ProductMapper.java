@@ -18,6 +18,7 @@ public class ProductMapper {
         product.setName(dto.getName());
         product.setAvailable(Boolean.TRUE);
         product.setBrand(dto.getBrand());
+        product.setImageUrl(dto.getImageUrl());
         product.setCategory(dto.getCategory());
         product.setCreatedAt(dto.getCreatedAt());
         product.setUpdatedAt(dto.getUpdatedAt());
@@ -30,6 +31,7 @@ public class ProductMapper {
         dto.setId(model.getId().toString());
         dto.setName(model.getName());
         dto.setBrand(model.getBrand());
+        dto.setImageUrl(model.getImageUrl());
         dto.setCategory(model.getCategory());
         dto.setCreatedAt(model.getCreatedAt());
         dto.setUpdatedAt(model.getUpdatedAt());
