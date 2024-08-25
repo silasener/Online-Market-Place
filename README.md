@@ -48,6 +48,7 @@ The Online Marketplace application is designed to handle products, sellers, user
   - Spring Security
   - Hibernate with JPA
   - MySQL
+  - Lombok
 - **Frontend**:
   - ReactJS
   - React Router
