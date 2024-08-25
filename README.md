@@ -41,6 +41,18 @@ The Online Marketplace application is designed to handle products, sellers, user
 - ReactJS for the frontend with routing, API handling, and state management.
 
 
+## Screenshots
+
+Below are some screenshots of the application to give you an idea of its user interface:
+
+![Admin Home Page](https://github.com/user-attachments/assets/673f91d2-4aaa-45ae-abcd-7592dea555e1)
+![Admin Management Tool](https://github.com/user-attachments/assets/03a4f303-71ce-4c77-9576-ff43882a78a2)
+![User Home Page](https://github.com/user-attachments/assets/c933a15a-a0a5-46d4-8bc2-f100b417f38c)
+![User Favorite Product Page](https://github.com/user-attachments/assets/f2702202-3382-4687-b56e-2debd23b2cb6)
+![User Black List Page](https://github.com/user-attachments/assets/4b5a3059-5393-4f6d-9c8d-ebe046711efc)
+![User Product Seller's Page](https://github.com/user-attachments/assets/f49f97a9-8483-47dc-9c9c-3ccc64449686)
+
+
 ## Technologies
 
 - **Backend**:
