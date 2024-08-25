@@ -1,64 +1,71 @@
-# Online Marketplace Application
+# Online Marketplace
 
-This is a robust and feature-rich online marketplace built using the **Spring Boot** framework. The platform allows users to browse, purchase, and manage their favorite products while also providing powerful tools for administrators to manage products, users, and sellers effectively.
+This project implements a web application for an Online Marketplace using the Spring Boot framework for the backend and ReactJS for the frontend. The application utilizes Spring Security for authentication and authorization, Hibernate with JPA for database operations, and MySQL as the database. 
 
-## Key Features and Functionality
+## Table of Contents
 
-### User Features:
+- [Overview](#overview)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Technologies](#technologies)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Usage](#usage)
 
-- **Secure User Authentication and Authorization**  
-  The platform uses **Spring Security** to implement role-based access control (Admin and User), ensuring users have secure access to their accounts. Unauthorized actions are blocked based on user roles.
+## Overview
 
-- **Browse and Search Products**  
-  Users can easily browse through products with advanced filtering options such as product categories, price ranges, and more to help them find exactly what they're looking for.
+The Online Marketplace application is designed to handle products, sellers, users, and their interactions, including features such as user authentication, product management, and favorite/blacklist functionalities. It distinguishes between Admin and regular users, with Admins having additional privileges.
 
-- **Favorites Management**  
-  Users can save their favorite products in a personalized list for quick access and easy navigation to preferred items.
 
-- **Block Unwanted Sellers**  
-  To enhance user experience and maintain a safe shopping environment, users can block sellers they do not wish to interact with, effectively hiding those sellers’ products from the user's view.
+## Features
 
-- **View Available Products**  
-  Users can view the products they are eligible to purchase, automatically filtering out items from blocked sellers.
+### Functional Requirements
 
-### Administrative Features:
+- **Admins and Users**: Users can log in to the system.
+- **Admin Capabilities**:
+  - Add, delete, and update products, users, and sellers.
+  - Search and filter products, sellers, and users.
+- **User Capabilities**:
+  - View a list of products.
+  - Add/remove products to/from the favorite list.
+  - Add/remove sellers to/from the blacklist.
+  - Search products by name and filter by category and brand.
 
-- **Comprehensive Product Management**  
-  Administrators have full control over the product inventory, allowing them to add, update, or delete products as needed.
+### Technical Requirements
 
-- **User Management**  
-  Admins can manage user accounts, including the creation, updating, and deletion of user profiles. This helps maintain a secure and well-functioning user base.
+- Two user roles: Admin & End-user.
+- Spring Security for authentication and authorization.
+- Hibernate with JPA annotations for database operations.
+- MySQL for database storage.
+- ReactJS for the frontend with routing, API handling, and state management.
 
-- **Seller Management**  
-  Admins can manage seller accounts, ensuring only verified and legitimate sellers are part of the marketplace. Seller profiles can be created, updated, and deleted efficiently.
 
-- **Advanced Filtering for Products**  
-  Administrators can filter product listings based on multiple criteria (e.g., product categories, price ranges, popularity) to better manage the inventory.
+## Technologies
 
-- **Bulk Management for Users and Sellers**  
-  Admins can manage large groups of users or sellers by their IDs, streamlining administrative tasks such as bulk deletions or updates.
+- **Backend**:
+  - Spring Boot
+  - Spring Security
+  - Hibernate with JPA
+  - MySQL
+- **Frontend**:
+  - ReactJS
+  - React Router
+  - Axios
+  - React Hooks (e.g., useEffect, useState)
 
-- **Generate Sample Users for Testing**  
-  Administrators can generate sample user accounts for testing or demo purposes, making it easy to test the functionality in different scenarios.
 
-## Technical Stack
+## Project Structure
 
-This application is built with the following technologies:
+- **Model**: Entity classes representing database tables (e.g., User, Product, Seller).
+- **Repository**: Interfaces for data access operations (e.g., UserRepository, ProductRepository).
+- **Service**: Business logic and service layer (e.g., UserService, ProductService).
+- **Controller**: Handles HTTP requests and responses (e.g., UserController, ProductController).
+- **DTO**: Data Transfer Objects for communication between frontend and backend (e.g., UserDto, ProductDto).
+- **Mapper**: Converts between entity classes and DTOs (e.g., UserMapper, ProductMapper).
+- **Exception**: Custom exceptions for error handling (e.g., UserNotFoundException).
+- **Security**: Configuration for authentication and authorization (e.g., WebSecurityConfig, UserAuthDetails).
 
-- **Spring Boot**  
-  Provides the backbone for building and running the application quickly with minimal configuration.
-
-- **Spring Security**  
-  Handles user authentication and authorization, ensuring secure access to various application functionalities.
-
-- **Spring Data JPA**  
-  Simplifies database interactions, making it easier to perform CRUD operations and query data with an object-oriented approach.
-
-- **MySQL**  
-  A reliable and scalable relational database for persisting user, product, and transaction data.
-
-- **Lombok**  
-  Reduces boilerplate code by auto-generating common Java methods like getters, setters, constructors, etc.
 
 ## Getting Started
 
@@ -89,12 +96,14 @@ Make sure you have the following installed on your machine:
    CREATE DATABASE : your-database;
    ```
 
-   Update the `application.properties` file with your MySQL credentials:
+   Update the `application.yaml` file with your MySQL credentials:
 
    ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/your-database
-   spring.datasource.username=your-username
-   spring.datasource.password=your-password
+   spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/your-database
+      username: your-username
+      password: your-password
    ```
 
 3. **Build and Run the Application**
@@ -108,28 +117,57 @@ Make sure you have the following installed on your machine:
 
    The application will be available at `http://localhost:8080`.
 
-### API Documentation
 
-The application exposes a RESTful API for programmatic access to its features. A detailed API documentation, including endpoints, request and response formats, and authentication requirements, is available. You can also use tools like **Swagger** for exploring the API.
+## Configuration
 
-## Contribution Guidelines
+Update the application.yaml file in the backend directory to configure database connection and other settings. Ensure that the spring.datasource.url, spring.datasource.username, and spring.datasource.password fields are set correctly.
 
-We welcome contributions! Follow these steps to contribute:
+## Usage
 
-1. Fork the repository.
+### Access the Application
 
-2. Create a new branch for your feature or bug fix:
+Open the following URLs in your browser:
 
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+- **Backend:** [http://localhost:8080](http://localhost:8080)
 
-3. Implement your changes and write comprehensive tests.
+### API Endpoints
 
-4. Push your branch to your forked repository:
+#### Login
 
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+- **POST** `/api/v1/login`  
+  Authenticate a user.
 
-5. Submit a pull request with a detailed explanation of your changes.
+#### Products
+
+- **GET** `/api/v1/products`  
+  Retrieve a list of products.
+- **GET** `/api/v1/products/{id}`  
+  Retrieve a product by its ID.
+
+#### Sellers
+
+- **GET** `/api/v1/users/sellers`  
+  Retrieve a list of sellers.
+- **GET** `/api/v1/users/sellers/{id}`  
+  Retrieve a seller by their ID.
+
+#### Favorite List
+
+- **GET** `/api/v1/users/{userId}/favorites`  
+  Retrieve the favorite products of a user.
+- **POST** `/api/v1/users/{userId}/favorites/{productId}`  
+  Add a product to the user's favorite list.
+- **DELETE** `/api/v1/users/{userId}/favorites/{productId}`  
+  Remove a product from the user's favorite list.
+
+#### Black List
+
+- **POST** `/api/v1/users/{userId}/block-seller`  
+  Block a seller for a user.
+- **GET** `/api/v1/users/{userId}/blocked-sellers`  
+  Retrieve the blocked sellers for a user.
+
+
+
+
+
