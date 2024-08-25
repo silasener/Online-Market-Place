@@ -45,23 +45,38 @@ The Online Marketplace application is designed to handle products, sellers, user
 
 Below are some screenshots of the application to give you an idea of its user interface:
 
-*Admin Home Page*
-<img src="https://github.com/user-attachments/assets/673f91d2-4aaa-45ae-abcd-7592dea555e1" alt="Admin Home Page" width="400"/>
+<figure style="display: flex; justify-content: space-between;">
+    <div style="margin-right: 10px;">
+        <img src="https://github.com/user-attachments/assets/673f91d2-4aaa-45ae-abcd-7592dea555e1" alt="Admin Home Page" width="400"/>
+        <figcaption>Admin Home Page</figcaption>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/03a4f303-71ce-4c77-9576-ff43882a78a2" alt="Admin Management Tool" width="400"/>
+        <figcaption>Admin Management Tool</figcaption>
+    </div>
+</figure>
 
-*Admin Management Tool*
-<img src="https://github.com/user-attachments/assets/03a4f303-71ce-4c77-9576-ff43882a78a2" alt="Admin Management Tool" width="400"/>
+<figure style="display: flex; justify-content: space-between;">
+    <div style="margin-right: 10px;">
+        <img src="https://github.com/user-attachments/assets/c933a15a-a0a5-46d4-8bc2-f100b417f38c" alt="User Home Page" width="400"/>
+        <figcaption>User Home Page</figcaption>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/f2702202-3382-4687-b56e-2debd23b2cb6" alt="User Favorite Product Page" width="400"/>
+        <figcaption>User Favorite Product Page</figcaption>
+    </div>
+</figure>
 
-*User Home Page*
-<img src="https://github.com/user-attachments/assets/c933a15a-a0a5-46d4-8bc2-f100b417f38c" alt="User Home Page" width="400"/>
-
-*User Favorite Product Page*
-<img src="https://github.com/user-attachments/assets/f2702202-3382-4687-b56e-2debd23b2cb6" alt="User Favorite Product Page" width="400"/>
-
-*User Product Seller's Page*
-<img src="https://github.com/user-attachments/assets/f49f97a9-8483-47dc-9c9c-3ccc64449686" alt="User Product Seller's Page" width="400"/>
-
-*User Black List Page*
-<img src="https://github.com/user-attachments/assets/4b5a3059-5393-4f6d-9c8d-ebe046711efc" alt="User Black List Page" width="400"/>
+<figure style="display: flex; justify-content: space-between;">
+    <div style="margin-right: 10px;">
+        <img src="https://github.com/user-attachments/assets/f49f97a9-8483-47dc-9c9c-3ccc64449686" alt="User Product Seller's Page" width="400"/>
+        <figcaption>User Product Seller's Page</figcaption>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/4b5a3059-5393-4f6d-9c8d-ebe046711efc" alt="User Black List Page" width="400"/>
+        <figcaption>User Black List Page</figcaption>
+    </div>
+</figure>
 
 
 ## Technologies
