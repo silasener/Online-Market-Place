@@ -4,5 +4,6 @@ public enum Category {
     PHONE,
     LAPTOP,
     TABLET,
-    HEADPHONES
+    HEADPHONES,
+    WATCH,
 }

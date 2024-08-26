@@ -41,15 +41,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<String, Object> getAvailableProductsForUser(String userId, int page, int size) {
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
-        List<UUID> blockedSellerIds = user.getBlackListedSellers().stream().map(Seller::getId).collect(Collectors.toList());
 
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Product> newProductsPage;
-        if (blockedSellerIds.isEmpty()) {
+        if (user.getBlackListedSellers().isEmpty()) {
             newProductsPage = productRepository.findBySellersIsNotEmpty(pageable);
         } else {
-            newProductsPage = productRepository.findProductsBySellerIdsNotIn(blockedSellerIds, pageable);
+            newProductsPage= productRepository.findProductsByNonBlackListedSellers(user.getBlackListedSellers(),pageable);
         }
 
         List<ProductDto> productDtos = newProductsPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
@@ -66,9 +65,7 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = productRepository.findAll(pageable);
 
-        List<ProductDto> productDtos = productPage.getContent().stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
+        List<ProductDto> productDtos = productPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("products", productDtos);
@@ -124,8 +121,7 @@ public class ProductServiceImpl implements ProductService {
 
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
 
-        Optional<Product> productExisting = productRepository.findProductByNameAndBrandAndCategoryAndIdNot(updateProductDto.getName()
-                , updateProductDto.getBrand(), updateProductDto.getCategory(), product.getId());
+        Optional<Product> productExisting = productRepository.findProductByNameAndBrandAndCategoryAndIdNot(updateProductDto.getName(), updateProductDto.getBrand(), updateProductDto.getCategory(), product.getId());
 
         if (productExisting.isPresent()) {
             throw new ProductAlreadyExistingException(String.valueOf(productExisting.get().getId()));
@@ -153,9 +149,7 @@ public class ProductServiceImpl implements ProductService {
 
         final List<Seller> sellerList = sellerRepository.findAll().stream().filter(seller -> seller.getProducts().contains(product)).collect(Collectors.toList());
 
-        List<SellerDto> sellerDtoList = sellerList.stream()
-                .map(sellerMapper::toDto)
-                .collect(Collectors.toList());
+        List<SellerDto> sellerDtoList = sellerList.stream().map(sellerMapper::toDto).collect(Collectors.toList());
 
         return sellerDtoList;
     }
@@ -174,26 +168,21 @@ public class ProductServiceImpl implements ProductService {
         return productDtoBySeller;
     }
 
+    @Override
     public Map<String, Object> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest, int page, int size) {
         final User user = userRepository.findUserById(UUID.fromString(productFilterRequest.getUserId())).orElseThrow(() -> new UserNotFoundException(productFilterRequest.getUserId()));
-        List<UUID> blockedSellerIds = user.getBlackListedSellers().stream().map(Seller::getId).collect(Collectors.toList());
-        List<Product> availableProducts = productRepository.findProductsBySellerIdsNotIn(blockedSellerIds);
-
-        List<Product> filteredProductsForUser = availableProducts.stream()
-                .filter(product ->
-                        ((productFilterRequest.getProductNames().isEmpty() || productFilterRequest.getProductNames().contains(product.getName())) &&
-                                (productFilterRequest.getCategories().isEmpty() || productFilterRequest.getCategories().contains(product.getCategory())) &&
-                                (productFilterRequest.getBrands().isEmpty() || productFilterRequest.getBrands().contains(product.getBrand()))))
-                .collect(Collectors.toList());
-
-        if (filteredProductsForUser.isEmpty()) {
-            throw new ProductNotFoundForFilterException();
-        }
 
         Pageable pageable = PageRequest.of(page, size);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), filteredProductsForUser.size());
-        Page<Product> paginatedProducts = new PageImpl<>(filteredProductsForUser.subList(start, end), pageable, filteredProductsForUser.size());
+
+        Page<Product> paginatedProducts = productRepository.findFilteredProductsForUser(
+                user.getBlackListedSellers(),
+                productFilterRequest.getProductNames().isEmpty() ? null : productFilterRequest.getProductNames(),
+                productFilterRequest.getCategories().isEmpty() ? null : productFilterRequest.getCategories(),
+                productFilterRequest.getBrands().isEmpty() ? null : productFilterRequest.getBrands(),
+                pageable
+        );
+
+        if (paginatedProducts.isEmpty()) {throw new ProductNotFoundForFilterException();}
 
         List<ProductDto> filteredProductDto = paginatedProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
 
