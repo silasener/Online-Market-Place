@@ -20,9 +20,7 @@ public class RoleServiceImpl implements RoleService {
         if (CollectionUtils.isEmpty(roles)) {
             return;
         }
-        roles.forEach(role -> {
-            roleRepository.findByName(role).orElseGet(() -> roleRepository.save(new Role(role)));
-        });
+        roles.forEach(role -> roleRepository.findByName(role).orElseGet(() -> roleRepository.save(new Role(role))));
     }
 
     @Override

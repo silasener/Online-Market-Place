@@ -28,7 +28,7 @@ public class Seller extends BaseEntity {
     private String email;
 
     @NotBlank
-    private String venderCode;
+    private String vendorCode;
 
     @ManyToMany(mappedBy = "sellers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Product> products = new ArrayList<>();

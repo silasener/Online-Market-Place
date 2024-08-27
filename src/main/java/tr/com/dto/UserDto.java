@@ -1,7 +1,6 @@
 package tr.com.dto;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Builder

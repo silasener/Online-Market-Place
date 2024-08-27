@@ -6,6 +6,6 @@ public class SellerNotFoundException extends BaseException {
     }
 
     public SellerNotFoundException() {
-        super("No sellers found matching the provided venderCode");
+        super("No sellers found matching the provided vendorCode");
     }
 }

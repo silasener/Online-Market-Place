@@ -13,10 +13,8 @@ import tr.com.request.ProductFilterRequest;
 import tr.com.request.UpdateExistingProductRequest;
 import tr.com.response.BaseResponse;
 import tr.com.service.ProductService;
-
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor

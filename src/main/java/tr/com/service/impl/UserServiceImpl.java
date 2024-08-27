@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public List<UserDto> generateSampleUsers(int userSize) {
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserDto> userDtoList = new ArrayList<>();
         for (int i = 0; i < userSize; i++) {
             final UserDto userDto = UserDto.builder()
                     .name(StringUtils.generateRandomString(10))
@@ -91,9 +91,9 @@ public class UserServiceImpl implements UserService {
             userModel.setPassword(passwordEncoder.encode("pass"));
             final Role userRole = roleService.findByName(Constants.Roles.USER);
             userModel.addRole(userRole);
-            userDtos.add(userMapper.toDto(userRepository.save(userModel)));
+            userDtoList.add(userMapper.toDto(userRepository.save(userModel)));
         }
-        return userDtos;
+        return userDtoList;
     }
 
     @Transactional
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
                 .password(createNewUserRequest.getPassword())
                 .build();
 
-        Optional<User> existingUsername=userRepository.findUserByUsername(userDto.getUsername());
+        Optional<User> existingUsername = userRepository.findUserByUsername(userDto.getUsername());
 
         if (existingUsername.isPresent()) {
             throw new UsernameAlreadyInUseException(userDto.getUsername());
@@ -125,16 +125,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SellerDto createNewSeller(CreateNewSellerRequest createNewSellerRequest) {
-        final SellerDto sellerDto=SellerDto.builder().id(UUID.randomUUID().toString())
+        final SellerDto sellerDto = SellerDto.builder().id(UUID.randomUUID().toString())
                 .name(createNewSellerRequest.getName())
                 .surname(createNewSellerRequest.getSurname())
                 .email(createNewSellerRequest.getEmail())
-                .venderCode(createNewSellerRequest.getVenderCode())
+                .vendorCode(createNewSellerRequest.getVendorCode())
                 .build();
 
-        Optional<Seller> existingSeller = sellerRepository.findSellerByVenderCode(sellerDto.getVenderCode());
+        Optional<Seller> existingSeller = sellerRepository.findSellerByVendorCode(sellerDto.getVendorCode());
         if (existingSeller.isPresent()) {
-            throw new SellerVenderCodeAlreadyInUseException(sellerDto.getVenderCode());
+            throw new SellerVendorCodeAlreadyInUseException(sellerDto.getVendorCode());
         }
 
         final Seller seller = sellerMapper.toModel(sellerDto);
@@ -175,12 +175,10 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
 
-        List<UserDto> userDtos = users.stream()
+        return users.stream()
                 .filter(user -> user.getRoles().stream().noneMatch(role -> "ROLE_ADMIN".equals(role.getName())))
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
-
-        return userDtos;
     }
 
 
@@ -229,8 +227,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SellerDto> findAllSellers() {
-        List<SellerDto> sellerDtoList = sellerRepository.findAll().stream().map(sellerMapper::toDto).collect(Collectors.toList());
-        return sellerDtoList;
+        return sellerRepository.findAll().stream().map(sellerMapper::toDto).collect(Collectors.toList());
     }
 
 
@@ -241,17 +238,13 @@ public class UserServiceImpl implements UserService {
 
         for (Product product : seller.getProducts()) {
             product.getSellers().remove(seller);
-            productRepository.save(product);
         }
 
-        seller.getProducts().clear();
-        sellerRepository.save(seller);
+       for( User user :seller.getBlackListedByUsers()){
+           user.getBlackListedSellers().remove(seller);
+       }
 
-        final Seller updatedSeller = sellerRepository.findSellerById(UUID.fromString(sellerId)).orElseThrow(() -> new SellerNotFoundException(sellerId));
-
-        sellerRepository.deleteSellerById(updatedSeller.getId());
-        sellerRepository.save(updatedSeller);
-
+        sellerRepository.delete(seller);
         return sellerMapper.toDto(seller);
     }
 
@@ -278,9 +271,7 @@ public class UserServiceImpl implements UserService {
     public List<SellerDto> findBlockedSellersByUserId(String userId) {
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
 
-        List<SellerDto> blockedSeller = user.getBlackListedSellers().stream().map(sellerMapper::toDto).collect(Collectors.toList());
-
-        return blockedSeller;
+        return user.getBlackListedSellers().stream().map(sellerMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -311,58 +302,50 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ProductDto> findFavoriteProductsByUser(String userId) {
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
-        List<ProductDto> userFavProductDtoList = user.getFavoriteProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
-        return userFavProductDtoList;
+        return user.getFavoriteProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<UserDto> findUsersByIds(List<String> userIds) {
         List<User> allUsers = userRepository.findAll();
 
-        List<User> matchingUsers = allUsers.stream().filter(user -> userIds.contains(String.valueOf(user.getId()))).collect(Collectors.toList());
+        List<User> matchingUsers = allUsers.stream().filter(user -> userIds.contains(String.valueOf(user.getId()))).toList();
 
         if (matchingUsers.isEmpty()) {
             throw new UserNotFoundException();
         }
 
-        List<UserDto> filteredUsers = matchingUsers.stream().map(userMapper::toDto).collect(Collectors.toList());
-
-        return filteredUsers;
+        return matchingUsers.stream().map(userMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<SellerDto> findSellersByIds(List<String> sellerIds) {
         List<Seller> allSellers = sellerRepository.findAll();
 
-        List<Seller> matchingSellers = allSellers.stream().filter(seller -> sellerIds.contains(String.valueOf(seller.getId()))).collect(Collectors.toList());
+        List<Seller> matchingSellers = allSellers.stream().filter(seller -> sellerIds.contains(String.valueOf(seller.getId()))).toList();
 
         if (matchingSellers.isEmpty()) {
             throw new SellerNotFoundException();
         }
 
-        List<SellerDto> filteredSellers = matchingSellers.stream().map(sellerMapper::toDto).collect(Collectors.toList());
-
-        return filteredSellers;
+        return matchingSellers.stream().map(sellerMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductDto> filterFavoriteProducts(ProductFilterRequest productFilterRequest) {
         List<ProductDto> favoriteProductsDto = findFavoriteProductsByUser(productFilterRequest.getUserId());
-        List<Product> favoriteProducts = favoriteProductsDto.stream().map(productMapper::toModel).collect(Collectors.toList());
+        List<Product> favoriteProducts = favoriteProductsDto.stream().map(productMapper::toModel).toList();
 
 
-        List<Product> filteredFavoriteProducts=favoriteProducts.stream()
-                .filter(product ->   ((productFilterRequest.getProductNames().isEmpty() || productFilterRequest.getProductNames().contains(product.getName())) &&
+        List<Product> filteredFavoriteProducts = favoriteProducts.stream()
+                .filter(product -> ((productFilterRequest.getProductNames().isEmpty() || productFilterRequest.getProductNames().contains(product.getName())) &&
                         (productFilterRequest.getCategories().isEmpty() || productFilterRequest.getCategories().contains(product.getCategory())) &&
-                        (productFilterRequest.getBrands().isEmpty() || productFilterRequest.getBrands().contains(product.getBrand())))).collect(Collectors.toList());
+                        (productFilterRequest.getBrands().isEmpty() || productFilterRequest.getBrands().contains(product.getBrand())))).toList();
 
         if (filteredFavoriteProducts.isEmpty()) {
             throw new ProductNotFoundForFilterException();
         }
 
-        List<ProductDto> filteredFavoriteProductsDto = filteredFavoriteProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
-
-
-        return filteredFavoriteProductsDto;
+        return filteredFavoriteProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 }

@@ -35,5 +35,5 @@ public class Product extends BaseEntity {
     private Boolean available = Boolean.TRUE;
 
     @ManyToMany(mappedBy = "favoriteProducts", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<User> favoritedByUsers = new ArrayList<>();
+    private List<User> favoriteByUsers = new ArrayList<>();
 }

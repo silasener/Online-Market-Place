@@ -1,8 +1,6 @@
 package tr.com.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Builder
@@ -19,7 +17,7 @@ public class SellerDto {
 
     private String email;
 
-    private String venderCode;
+    private String vendorCode;
 
     private LocalDateTime createdAt;
 

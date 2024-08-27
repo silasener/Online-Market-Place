@@ -9,7 +9,6 @@ import tr.com.utils.SecurityUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

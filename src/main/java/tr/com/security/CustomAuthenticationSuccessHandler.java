@@ -21,10 +21,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         UserAuthDetails userAuthDetails = (UserAuthDetails) authentication.getPrincipal();
 
         String role;
-        if(userAuthDetails.getUsername().equals("admin")){ role="admin";
-        }else{role="user";}
+        if (userAuthDetails.getUsername().equals("admin")) {
+            role = "admin";
+        } else {
+            role = "user";
+        }
 
-        UUID userUUID=userAuthDetails.getId();
+        UUID userUUID = userAuthDetails.getId();
 
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("role", role);

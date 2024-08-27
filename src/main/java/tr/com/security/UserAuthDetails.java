@@ -18,9 +18,9 @@ public class UserAuthDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       if(Objects.nonNull(user) && CollectionUtils.isNotEmpty(user.getRoles())) {
-           return user.getRoles().stream().map(t->new SimpleGrantedAuthority(t.getName())).toList();
-       }
+        if (Objects.nonNull(user) && CollectionUtils.isNotEmpty(user.getRoles())) {
+            return user.getRoles().stream().map(t -> new SimpleGrantedAuthority(t.getName())).toList();
+        }
         return Collections.emptyList();
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
-public class DataLoader  implements ApplicationRunner {
+public class DataLoader implements ApplicationRunner {
 
     private final UserService userService;
 
@@ -20,10 +20,8 @@ public class DataLoader  implements ApplicationRunner {
 
     @Transactional
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-
+    public void run(ApplicationArguments args) {
         roleService.checkAndCreateRoles(List.of(Constants.Roles.ADMIN, Constants.Roles.USER));
-
         userService.checkAndCreateAdminUser();
     }
 }

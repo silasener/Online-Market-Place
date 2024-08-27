@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseResponse<>(ex.getMessage()));
     }
 
-    @ExceptionHandler(SellerVenderCodeAlreadyInUseException.class)
-    public ResponseEntity<BaseResponse<String>> handleSellerVenderCodeAlreadyInUseException(SellerVenderCodeAlreadyInUseException ex) {
+    @ExceptionHandler(SellerVendorCodeAlreadyInUseException.class)
+    public ResponseEntity<BaseResponse<String>> handleSellerVendorCodeAlreadyInUseException(SellerVendorCodeAlreadyInUseException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseResponse<>(ex.getMessage()));
     }
 

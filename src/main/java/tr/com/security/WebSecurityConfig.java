@@ -17,10 +17,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @Configuration
 public class WebSecurityConfig {
 
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
-
     private static final String[] AUTH_WHITELIST = { //
             "/api/v1/h2-console", //
             "/api/v1/h2-console/**", //
@@ -32,6 +28,9 @@ public class WebSecurityConfig {
             "/api/v1/graphiql", //
             "/api/v1/api/graphql", //
     };
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, UserAuthService userAuthService) {

@@ -51,20 +51,15 @@ public class User extends BaseEntity {
         role.getUsers().add(this);
     }
 
-    public void removeRole(Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
-    }
-
 
     public void addFavoriteProduct(Product product) {
         this.favoriteProducts.add(product);
-        product.getFavoritedByUsers().add(this);
+        product.getFavoriteByUsers().add(this);
     }
 
     public void removeFavoriteProduct(Product product) {
         this.favoriteProducts.remove(product);
-        product.getFavoritedByUsers().remove(this);
+        product.getFavoriteByUsers().remove(this);
     }
 
     public void addBlackListedSeller(Seller seller) {

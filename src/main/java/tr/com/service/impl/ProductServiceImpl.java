@@ -2,7 +2,6 @@ package tr.com.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,13 +47,13 @@ public class ProductServiceImpl implements ProductService {
         if (user.getBlackListedSellers().isEmpty()) {
             newProductsPage = productRepository.findBySellersIsNotEmpty(pageable);
         } else {
-            newProductsPage= productRepository.findProductsByNonBlackListedSellers(user.getBlackListedSellers(),pageable);
+            newProductsPage = productRepository.findProductsByNonBlackListedSellers(user.getBlackListedSellers(), pageable);
         }
 
-        List<ProductDto> productDtos = newProductsPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
+        List<ProductDto> productDtoList = newProductsPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("products", productDtos);
+        response.put("products", productDtoList);
         response.put("totalPages", newProductsPage.getTotalPages());
 
         return response;
@@ -65,10 +64,10 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = productRepository.findAll(pageable);
 
-        List<ProductDto> productDtos = productPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
+        List<ProductDto> productDtoList = productPage.getContent().stream().map(productMapper::toDto).collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("products", productDtos);
+        response.put("products", productDtoList);
         response.put("totalPages", productPage.getTotalPages());
         return response;
     }
@@ -99,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto deleteProductById(String productId) {
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
 
-        for (User user : product.getFavoritedByUsers()) {
+        for (User user : product.getFavoriteByUsers()) {
             user.getFavoriteProducts().remove(product);
         }
 
@@ -147,11 +146,9 @@ public class ProductServiceImpl implements ProductService {
     public List<SellerDto> getSellersByProductId(String productId) {
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
 
-        final List<Seller> sellerList = sellerRepository.findAll().stream().filter(seller -> seller.getProducts().contains(product)).collect(Collectors.toList());
+        final List<Seller> sellerList = sellerRepository.findAll().stream().filter(seller -> seller.getProducts().contains(product)).toList();
 
-        List<SellerDto> sellerDtoList = sellerList.stream().map(sellerMapper::toDto).collect(Collectors.toList());
-
-        return sellerDtoList;
+        return sellerList.stream().map(sellerMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -164,8 +161,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> getProductsBySellerId(String sellerId) {
         final Seller seller = sellerRepository.findSellerById(UUID.fromString(sellerId)).orElseThrow(() -> new SellerNotFoundException(sellerId));
 
-        List<ProductDto> productDtoBySeller = seller.getProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
-        return productDtoBySeller;
+        return seller.getProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -182,7 +178,9 @@ public class ProductServiceImpl implements ProductService {
                 pageable
         );
 
-        if (paginatedProducts.isEmpty()) {throw new ProductNotFoundForFilterException();}
+        if (paginatedProducts.isEmpty()) {
+            throw new ProductNotFoundForFilterException();
+        }
 
         List<ProductDto> filteredProductDto = paginatedProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
 
@@ -195,28 +193,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<String, Object> filterProducts(ProductFilterRequest productFilterRequest, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<Product> allProducts = productRepository.findAll();
 
-        List<Product> filteredProductsForAdmin = allProducts.stream()
-                .filter(product ->
-                        (productFilterRequest.getProductNames().isEmpty() || productFilterRequest.getProductNames().contains(product.getName())) &&
-                                (productFilterRequest.getCategories().isEmpty() || productFilterRequest.getCategories().contains(product.getCategory())) &&
-                                (productFilterRequest.getBrands().isEmpty() || productFilterRequest.getBrands().contains(product.getBrand())))
-                .collect(Collectors.toList());
+        Page<Product> paginatedFilteredProducts = productRepository.findFilteredProducts(
+                productFilterRequest.getProductNames().isEmpty() ? null : productFilterRequest.getProductNames(),
+                productFilterRequest.getCategories().isEmpty() ? null : productFilterRequest.getCategories(),
+                productFilterRequest.getBrands().isEmpty() ? null : productFilterRequest.getBrands(),
+                pageable
+        );
 
-        if (filteredProductsForAdmin.isEmpty()) {
+        if (paginatedFilteredProducts.isEmpty()) {
             throw new ProductNotFoundForFilterException();
         }
 
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), filteredProductsForAdmin.size());
-        Page<Product> paginatedProducts = new PageImpl<>(filteredProductsForAdmin.subList(start, end), pageable, filteredProductsForAdmin.size());
-
-        List<ProductDto> filteredProductDto = paginatedProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
+        List<ProductDto> filteredProductDto = paginatedFilteredProducts.stream().map(productMapper::toDto).collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("products", filteredProductDto);
-        response.put("totalPages", paginatedProducts.getTotalPages());
+        response.put("totalPages", paginatedFilteredProducts.getTotalPages());
 
         return response;
     }

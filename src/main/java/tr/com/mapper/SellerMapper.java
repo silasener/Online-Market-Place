@@ -17,7 +17,7 @@ public class SellerMapper {
             seller.setId(UUID.fromString(dto.getId()));
         }
         seller.setName(dto.getName());
-        seller.setVenderCode(dto.getVenderCode());
+        seller.setVendorCode(dto.getVendorCode());
         seller.setSurname(dto.getSurname());
         seller.setEmail(dto.getEmail());
         seller.setCreatedAt(dto.getCreatedAt());
@@ -29,7 +29,7 @@ public class SellerMapper {
     public SellerDto toDto(Seller model) {
         SellerDto dto = new SellerDto();
         dto.setId(model.getId().toString());
-        dto.setVenderCode(model.getVenderCode());
+        dto.setVendorCode(model.getVendorCode());
         dto.setName(model.getName());
         dto.setSurname(model.getSurname());
         dto.setEmail(model.getEmail());
