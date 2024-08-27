@@ -59,12 +59,12 @@ Below are some screenshots of the application to give you an idea of its user in
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/c933a15a-a0a5-46d4-8bc2-f100b417f38c" alt="User Home Page" width="400"/>
+      <img src="https://github.com/user-attachments/assets/00e4077d-ff95-4db0-8d15-5e896f44cf76" alt="User Home Page" width="400"/>
       <br>
       <p align="center">User Home Page</p>
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/f2702202-3382-4687-b56e-2debd23b2cb6" alt="User Favorite Product Page" width="400"/>
+      <img src="https://github.com/user-attachments/assets/24b904ed-c30a-4f57-97cf-a3f903a3de8f" alt="User Favorite Product Page" width="400"/>
       <br>
       <p align="center">User Favorite Product Page</p>
     </td>
