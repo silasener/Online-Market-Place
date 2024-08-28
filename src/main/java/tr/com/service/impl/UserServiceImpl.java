@@ -78,26 +78,6 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public List<UserDto> generateSampleUsers(int userSize) {
-        List<UserDto> userDtoList = new ArrayList<>();
-        for (int i = 0; i < userSize; i++) {
-            final UserDto userDto = UserDto.builder()
-                    .name(StringUtils.generateRandomString(10))
-                    .surname(StringUtils.generateRandomString(10))
-                    .email(StringUtils.generateRandomString(5) + "@gmail.com")
-                    .build();
-            userDto.setUsername(generateUsername(userDto));
-            final User userModel = userMapper.toModel(userDto);
-            userModel.setPassword(passwordEncoder.encode("pass"));
-            final Role userRole = roleService.findByName(Constants.Roles.USER);
-            userModel.addRole(userRole);
-            userDtoList.add(userMapper.toDto(userRepository.save(userModel)));
-        }
-        return userDtoList;
-    }
-
-    @Transactional
-    @Override
     public UserDto createNewUser(CreateNewUserRequest createNewUserRequest) {
         final UserDto userDto = UserDto.builder().id(UUID.randomUUID().toString())
                 .name(createNewUserRequest.getName())
@@ -113,9 +93,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameAlreadyInUseException(userDto.getUsername());
         }
 
-        if (StringUtils.isBlank(userDto.getUsername())) {
-            userDto.setUsername(generateUsername(userDto));
-        }
         final User user = userMapper.toModel(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         final Role userRole = roleService.findByName(Constants.Roles.USER);
@@ -143,31 +120,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String generateUsername(UserDto userDto) {
-        Objects.requireNonNull(userDto, "userDto cannot be null");
-        Objects.requireNonNull(userDto.getName(), "userName cannot be null");
-        Objects.requireNonNull(userDto.getSurname(), "surname cannot be null");
-        Objects.requireNonNull(userDto.getEmail(), "email cannot be null");
-        return String.format("%s.%s", userDto.getName().replaceAll("\\s+", "").toLowerCase(), userDto.getSurname().replaceAll("\\s+", "").toLowerCase());
-    }
-
-
-    @Override
-    public void blockSellerForUser(String userId, String sellerId) {
+    public String blockSellerForUser(String userId, String sellerId) {
         User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
         Seller seller = sellerRepository.findSellerById(UUID.fromString(sellerId)).orElseThrow(() -> new SellerNotFoundException(sellerId));
 
         user.addBlackListedSeller(seller);
         userRepository.save(user);
+        return "Seller successfully blocked";
     }
 
     @Override
-    public void unblockSeller(String userId, String sellerId) {
+    public String unblockSeller(String userId, String sellerId) {
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
         final Seller seller = sellerRepository.findSellerById(UUID.fromString(sellerId)).orElseThrow(() -> new SellerNotFoundException(sellerId));
 
         user.removeBlackListedSeller(seller);
         userRepository.save(user);
+        return "Seller successfully unblocked";
     }
 
 
@@ -249,21 +218,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addProductToFavoriteList(String productId, String userId) {
+    public String addProductToFavoriteList(String productId, String userId) {
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
 
         user.addFavoriteProduct(product);
         userRepository.save(user);
+        return "User's favorite list updated with new product.";
     }
 
     @Override
-    public void removeProductFromFavoriteList(String productId, String userId) {
+    public String removeProductFromFavoriteList(String productId, String userId) {
         final Product product = productRepository.findProductById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
         final User user = userRepository.findUserById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
 
         user.removeFavoriteProduct(product);
         userRepository.save(user);
+        return "User's favorite product has been removed.";
     }
 
 
@@ -275,7 +246,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeProductFromSeller(String sellerId, String productId) {
+    public SellerDto removeProductFromSeller(String sellerId, String productId) {
         Seller seller = sellerRepository.findSellerById(UUID.fromString(sellerId)).orElseThrow(() -> new SellerNotFoundException(sellerId));
         Product product = productRepository.findById(UUID.fromString(productId)).orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -283,6 +254,7 @@ public class UserServiceImpl implements UserService {
         product.getSellers().remove(seller);
         productRepository.save(product);
         sellerRepository.save(seller);
+        return sellerMapper.toDto(seller);
     }
 
     @Override

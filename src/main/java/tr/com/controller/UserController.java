@@ -18,7 +18,6 @@ import tr.com.service.UserService;
 import java.util.List;
 
 
-
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/users") //http://localhost:8080/api/v1/users
@@ -29,19 +28,14 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public BaseResponse<List<UserDto>> getAllUsers() {
-        return new BaseResponse<>(userService.findAllUsers());
+        List<UserDto> userDtoList = userService.findAllUsers();
+        return new BaseResponse<>(userDtoList);
     }
 
     @GetMapping("/{userId}")
     public BaseResponse<UserDto> getUserDetail(@PathVariable("userId") String userId) {
-        return new BaseResponse<>(userService.findUserById(userId));
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/generate")
-    public ResponseEntity<BaseResponse<List<UserDto>>> generateMultipleUsers(@RequestParam int userSize) {
-        List<UserDto> createdUsers = userService.generateSampleUsers(userSize);
-        return ResponseEntity.ok(new BaseResponse<>(createdUsers));
+        UserDto userDto = userService.findUserById(userId);
+        return new BaseResponse<>(userDto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -60,16 +54,16 @@ public class UserController {
 
 
     @PostMapping("/{userId}/block-seller")
-    public ResponseEntity<String> blockSellerForUser(@PathVariable("userId") String userId, @RequestParam("sellerId") String sellerId){
-        userService.blockSellerForUser(userId, sellerId);
-        return ResponseEntity.ok("Seller successfully blocked");
+    public ResponseEntity<String> blockSellerForUser(@PathVariable("userId") String userId, @RequestParam("sellerId") String sellerId) {
+        String responseMessage = userService.blockSellerForUser(userId, sellerId);
+        return ResponseEntity.ok(responseMessage);
     }
 
 
     @PostMapping("/{userId}/unblock-seller")
     public ResponseEntity<String> unblockSellerForUser(@PathVariable("userId") String userId, @RequestParam("sellerId") String sellerId) {
-        userService.unblockSeller(userId, sellerId);
-        return ResponseEntity.ok("Seller successfully unblocked");
+        String responseMessage = userService.unblockSeller(userId, sellerId);
+        return ResponseEntity.ok(responseMessage);
     }
 
 
@@ -90,7 +84,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public BaseResponse<UserDto> updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UpdateExistingUserRequest updateExistingUserRequest) {
-        UserDto updatedUser=userService.updateExistingUser(userId,updateExistingUserRequest);
+        UserDto updatedUser = userService.updateExistingUser(userId, updateExistingUserRequest);
         return new BaseResponse<>(updatedUser);
     }
 
@@ -105,38 +99,37 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/sellers/{sellerId}")
     public BaseResponse<SellerDto> deleteSeller(@PathVariable("sellerId") String sellerId) {
-        return new BaseResponse<>(userService.deleteSellerById(sellerId));
+        SellerDto deletedSeller = userService.deleteSellerById(sellerId);
+        return new BaseResponse<>(deletedSeller);
     }
 
 
     @PostMapping("/{userId}/favorites/{productId}")
-    public ResponseEntity<BaseResponse<Boolean>> addProductToFavoriteList(@PathVariable("userId") String userId, @PathVariable("productId") String productId) {
-        userService.addProductToFavoriteList(productId,userId);
-        return ResponseEntity.ok(new BaseResponse<>(Boolean.TRUE));
+    public ResponseEntity<BaseResponse<String>> addProductToFavoriteList(@PathVariable("userId") String userId, @PathVariable("productId") String productId) {
+        String responseMessage = userService.addProductToFavoriteList(productId, userId);
+        return ResponseEntity.ok(new BaseResponse<>(responseMessage));
     }
 
 
     @DeleteMapping("/{userId}/favorites/{productId}")
-    public ResponseEntity<BaseResponse<Boolean>> removeProductFromFavoriteList(@PathVariable("userId") String userId,
-                                                                               @PathVariable("productId") String productId) {
-        userService.removeProductFromFavoriteList(productId,userId);
-        return ResponseEntity.ok(new BaseResponse<>(Boolean.TRUE));
+    public ResponseEntity<BaseResponse<String>> removeProductFromFavoriteList(@PathVariable("userId") String userId, @PathVariable("productId") String productId) {
+        String responseMessage = userService.removeProductFromFavoriteList(productId, userId);
+        return ResponseEntity.ok(new BaseResponse<>(responseMessage));
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{sellerId}/products/{productId}")
-    public BaseResponse<Boolean> removeProductFromSeller(@PathVariable String sellerId, @PathVariable String productId) {
-        userService.removeProductFromSeller(sellerId, productId);
-        return  new BaseResponse<>(Boolean.TRUE);
+    public ResponseEntity<BaseResponse<SellerDto>> removeProductFromSeller(@PathVariable String sellerId, @PathVariable String productId) {
+        SellerDto sellerDto = userService.removeProductFromSeller(sellerId, productId);
+        return ResponseEntity.ok(new BaseResponse<>(sellerDto));
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/sellers/{sellerId}/products/{productId}")
-    public ResponseEntity<BaseResponse<SellerDto>> addProductToSeller(@PathVariable("sellerId") String sellerId,
-                                                                      @PathVariable("productId") String productId) {
-        SellerDto sellerDto = userService.addProductToSeller(productId,sellerId);
+    public ResponseEntity<BaseResponse<SellerDto>> addProductToSeller(@PathVariable("sellerId") String sellerId, @PathVariable("productId") String productId) {
+        SellerDto sellerDto = userService.addProductToSeller(productId, sellerId);
         return ResponseEntity.ok(new BaseResponse<>(sellerDto));
     }
 

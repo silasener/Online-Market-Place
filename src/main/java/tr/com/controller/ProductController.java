@@ -35,14 +35,15 @@ public class ProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     public BaseResponse<Map<String, Object>> getAllProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Map<String, Object> response = productService.getAllProducts(page, size);
-        return new BaseResponse<>(response);
+        Map<String, Object> productResponse = productService.getAllProducts(page, size);
+        return new BaseResponse<>(productResponse);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{productId}")
     public BaseResponse<ProductDto> deleteProductById(@PathVariable("productId") String productId) {
-        return new BaseResponse<>(productService.deleteProductById(productId));
+        ProductDto deletedProduct = productService.deleteProductById(productId);
+        return new BaseResponse<>(deletedProduct);
     }
 
 
@@ -76,16 +77,16 @@ public class ProductController {
     @PostMapping("/available-product-filter")
     public ResponseEntity<BaseResponse<Map<String, Object>>> filterAvailableProductsForUser(@RequestBody ProductFilterRequest productFilterRequest,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Map<String, Object> response = productService.filterAvailableProductsForUser(productFilterRequest, page, size);
-        return ResponseEntity.ok(new BaseResponse<>(response));
+        Map<String, Object> filteredProductResponse = productService.filterAvailableProductsForUser(productFilterRequest, page, size);
+        return ResponseEntity.ok(new BaseResponse<>(filteredProductResponse));
     }
 
 
     @GetMapping("/available-for-user")
     public ResponseEntity<BaseResponse<Map<String, Object>>> getAvailableProductsForUser(@RequestParam("userId") String userId,
               @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Map<String, Object> response = productService.getAvailableProductsForUser(userId, page, size);
-        return ResponseEntity.ok(new BaseResponse<>(response));
+        Map<String, Object> availableProductResponse = productService.getAvailableProductsForUser(userId, page, size);
+        return ResponseEntity.ok(new BaseResponse<>(availableProductResponse));
     }
 
 
@@ -93,8 +94,8 @@ public class ProductController {
     @PostMapping("/filter")
     public ResponseEntity<BaseResponse<Map<String, Object>>> filterProducts(
             @RequestBody ProductFilterRequest productFilterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Map<String, Object> response = productService.filterProducts(productFilterRequest, page, size);
-        return ResponseEntity.ok(new BaseResponse<>(response));
+        Map<String, Object> filteredProductResponse = productService.filterProducts(productFilterRequest, page, size);
+        return ResponseEntity.ok(new BaseResponse<>(filteredProductResponse));
     }
 
 }

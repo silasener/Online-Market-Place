@@ -31,7 +31,9 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
             "AND (:categories IS NULL OR p.category IN :categories) " +
             "AND (:brands IS NULL OR p.brand IN :brands)")
     Page<Product> findFilteredProductsForUser(@Param("blackListedSellers") List<Seller> blackListedSellers,
-                                              @Param("productNames") List<String> productNames, @Param("categories") List<Category> categories, @Param("brands") List<Brand> brands, Pageable pageable);
+                                              @Param("productNames") List<String> productNames,
+                                              @Param("categories") List<Category> categories, @Param("brands") List<Brand> brands,
+                                              Pageable pageable);
 
 
     @Query("SELECT p FROM Product p WHERE (:productNames IS NULL OR p.name IN :productNames) " +
@@ -41,8 +43,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
                                        @Param("categories") List<Category> categories, @Param("brands") List<Brand> brands,
                                        Pageable pageable);
 
-
-    Page<Product> findAll(Pageable pageable);
 
     Page<Product> findBySellersIsNotEmpty(Pageable pageable);
 

@@ -34,7 +34,7 @@ public class User extends BaseEntity {
 
     private String password;
 
-    private Boolean enabled;
+    private Boolean enabled=Boolean.TRUE;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<Role> roles = new ArrayList<>();

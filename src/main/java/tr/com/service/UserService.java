@@ -19,17 +19,13 @@ public interface UserService {
 
     void checkAndCreateAdminUser();
 
-    List<UserDto> generateSampleUsers(int userSize);
-
     UserDto createNewUser(CreateNewUserRequest createNewUserRequest);
 
     SellerDto createNewSeller(CreateNewSellerRequest createNewSellerRequest);
 
-    String generateUsername(UserDto userDto);
+    String blockSellerForUser(String userId, String sellerId);
 
-    void blockSellerForUser(String userId, String sellerId);
-
-    void unblockSeller(String userId,String sellerId);
+    String unblockSeller(String userId,String sellerId);
 
     List<UserDto> findAllUsers();
 
@@ -41,13 +37,13 @@ public interface UserService {
 
     SellerDto deleteSellerById(String sellerId);
 
-    void addProductToFavoriteList(String productId, String userId);
+    String addProductToFavoriteList(String productId, String userId);
 
-    void removeProductFromFavoriteList(String productId, String userId);
+    String removeProductFromFavoriteList(String productId, String userId);
 
     List<SellerDto> findBlockedSellersByUserId(String userId);
 
-    void removeProductFromSeller(String sellerId, String productId);
+    SellerDto removeProductFromSeller(String sellerId, String productId);
 
     SellerDto addProductToSeller(String productId, String sellerId);
 
