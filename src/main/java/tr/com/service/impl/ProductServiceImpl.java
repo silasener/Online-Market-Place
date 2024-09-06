@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.com.dto.ProductDto;
@@ -22,7 +23,9 @@ import tr.com.request.ProductFilterRequest;
 import tr.com.request.UpdateExistingProductRequest;
 import tr.com.service.ProductService;
 import tr.com.utils.StringUtils;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +39,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
     private final SellerMapper sellerMapper;
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Map<String, Object> getAvailableProductsForUser(String userId, int page, int size) {
@@ -212,6 +217,20 @@ public class ProductServiceImpl implements ProductService {
         response.put("totalPages", paginatedFilteredProducts.getTotalPages());
 
         return response;
+    }
+
+    @Override
+    public void checkAndLoadSqlData() throws IOException {
+        if(sellerRepository.findAll().isEmpty() && productRepository.findAll().isEmpty()){
+            String filePath = "src/main/resources/insert_queries.sql";
+            List<String> queries = Files.readAllLines(Paths.get(filePath));
+
+            for (String query : queries) {
+                if (!query.trim().isEmpty()) {
+                    jdbcTemplate.execute(query);
+                }
+            }
+        }
     }
 
 

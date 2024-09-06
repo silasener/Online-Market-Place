@@ -6,6 +6,7 @@ import tr.com.request.CreateNewProductRequest;
 import tr.com.request.ProductFilterRequest;
 import tr.com.request.UpdateExistingProductRequest;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,4 +31,6 @@ public interface ProductService {
     Map<String, Object> filterAvailableProductsForUser(ProductFilterRequest productFilterRequest, int page, int size);
 
     Map<String, Object> filterProducts(ProductFilterRequest productFilterRequest, int page, int size);
+
+    void checkAndLoadSqlData() throws IOException;
 }
